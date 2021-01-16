@@ -17,7 +17,9 @@ Other considerations
 - Use set cookie header on the image tag to track people: not doing it. Reasons: not reliable, cna be blocked, privacy concerns, cross origin resource issues
 - Is a dashboard/frontend needed? Would be nice to see some statistics, but not really required since we can always see the page view
 
+## Endpoint Specification
 
+> `/{tag_id}?size=small`
 
 ## Refereces
 
