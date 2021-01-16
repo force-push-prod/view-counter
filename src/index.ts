@@ -1,6 +1,10 @@
-export const sum = (a: number, b: number) => {
-  if ('development' === process.env.NODE_ENV) {
-    console.log('boop');
-  }
-  return a + b;
-};
+import * as http from 'http';
+
+const server = http.createServer((req, res) => {
+  const { url, headers } = req;
+  res.statusCode = 200;
+  res.write('Hi');
+  res.end();
+});
+
+server.listen(1234, 'localhost');
