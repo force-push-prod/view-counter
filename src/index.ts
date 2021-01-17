@@ -22,8 +22,24 @@ const updateTagCount = db.prepare(
 );
 process.on('exit', () => db.close());
 
-const canvas = Canvas.createCanvas(100, 50);
-const ctx = canvas.getContext('2d');
+let canvas: Canvas.Canvas;
+// const canvas = Canvas.createCanvas(100, 50);
+// const ctx = canvas.getContext('2d');
+let nixieImages = [];
+for (let i = 0; i < 10; i++) {
+  Canvas.loadImage(`${__dirname}/../assets/nixie-${i}.png`).then(image => {
+    nixieImages.push(image);
+  });
+}
+
+function generateNixieDigits(digits: number) {
+  let digitArr = Array.from(`00000${digits}`.slice(-6));
+  canvas = Canvas.createCanvas(522, 180);
+  const ctx = canvas.getContext('2d');
+  digitArr.forEach((digit, i) => {
+    ctx.drawImage(nixieImages[digit], 87 * i, 0);
+  });
+}
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'https://www.example.com');
@@ -36,9 +52,10 @@ const server = http.createServer((req, res) => {
   }
   const newTagCount = (tagVal?.count ?? 0) + 1;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = '20px Impact';
-  ctx.fillText(`${newTagCount} views`, 5, 30);
+  generateNixieDigits(newTagCount);
+  // ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // ctx.font = '20px Impact';
+  // ctx.fillText(`${newTagCount} views`, 5, 30);
 
   const bodyBuffer = canvas.toBuffer('image/png');
   res.writeHead(200, {
