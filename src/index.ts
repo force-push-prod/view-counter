@@ -14,10 +14,10 @@ db.exec(
 const getTag = db.prepare(`SELECT count FROM viewCount WHERE id = ?`);
 const insertTagCount = db.prepare(`
   INSERT INTO viewCount (id, count)
-    VALUES(@tagId, @count)`);
+    VALUES(@tagId, 1)`);
 const updateTagCount = db.prepare(
   `UPDATE viewCount
-    SET count = @count
+    SET count = count + 1
     WHERE id = @tagId`
 );
 process.on('exit', () => db.close());
@@ -28,16 +28,17 @@ const ctx = canvas.getContext('2d');
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'https://www.example.com');
   const tagId = url.pathname.slice(1);
-  const tagCount = getTag.get(tagId);
-  if (tagCount) {
-    updateTagCount.run({ tagId: tagId, count: tagCount.count + 1 });
+  const tagVal = getTag.get(tagId);
+  if (tagVal) {
+    updateTagCount.run({ tagId: tagId });
   } else {
-    insertTagCount.run({ tagId: tagId, count: 1 });
+    insertTagCount.run({ tagId: tagId });
   }
+  const newTagCount = (tagVal?.count ?? 0) + 1;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.font = '20px Impact';
-  ctx.fillText(`${tagCount?.count + 1 ?? 1} views`, 5, 30);
+  ctx.fillText(`${newTagCount} views`, 5, 30);
 
   const bodyBuffer = canvas.toBuffer('image/png');
   res.writeHead(200, {
