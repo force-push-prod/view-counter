@@ -19,6 +19,12 @@ Other considerations
 
 ## Endpoint Specification
 
+### POST
+
+`/new?size=small`
+
+### GET
+
 > `/{tag_id}?size=small`
 
 ## Refereces
