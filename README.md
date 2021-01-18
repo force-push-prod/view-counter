@@ -6,8 +6,10 @@
 `/{tag_id}?size=small`
 
 
-```html
-<img src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md">
+```
+![View Count](https://yyin.me/view-counter/force-push-prod/view-counter/README.md)
+
+<img src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md" />
 ```
 
-<img width="20%" src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md">
+<img width="100" src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md" />
