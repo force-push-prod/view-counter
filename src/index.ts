@@ -66,4 +66,4 @@ const server = http.createServer((req, res) => {
   res.end();
 });
 
-server.listen(1234, 'localhost');
+server.listen(parseInt(process.env.PORT) || 1234, 'localhost');
