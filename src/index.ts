@@ -61,6 +61,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, {
     'Content-Type': 'image/png',
     'Content-Length': Buffer.byteLength(bodyBuffer),
+    'Cache-Control': 'no-store, max-age=0'
   });
   res.write(bodyBuffer);
   res.end();
