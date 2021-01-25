@@ -1,5 +1,5 @@
 # View Counter
-> This is a pixel image that will be updated to its number of views.
+> A pixel image that will be updated to its number of views.
 
 ## Usage
 
@@ -12,4 +12,4 @@
 <img src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md" />
 ```
 
-<img width="100" src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md" />
+<img width="100" src="https://yyin.me/view-counter/force-push-prod/view-counter/README.md2" />
