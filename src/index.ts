@@ -22,9 +22,14 @@ const updateTagCount = db.prepare(
 );
 process.on('exit', () => db.close());
 
+Canvas.registerFont(`${__dirname}/../assets/ChessType.ttf`, {
+  family: 'ChessType',
+});
+Canvas.registerFont(`${__dirname}/../assets/brandon-grotesque-light.otf`, {
+  family: 'Brandon',
+});
+
 let canvas: Canvas.Canvas;
-// const canvas = Canvas.createCanvas(100, 50);
-// const ctx = canvas.getContext('2d');
 let nixieImages = [];
 for (let i = 0; i < 10; i++) {
   Canvas.loadImage(`${__dirname}/../assets/nixie-${i}.png`).then(image => {
@@ -41,6 +46,20 @@ function generateNixieDigits(digits: number) {
   });
 }
 
+function generateChessTypeDigits(digits: number) {
+  canvas = Canvas.createCanvas(270, 90);
+  const ctx = canvas.getContext('2d');
+  ctx.font = '66px "ChessType"';
+  ctx.fillText(`00000${digits}`.slice(-6), 0, 70);
+}
+
+function generateBrandonDigits(digits: number) {
+  canvas = Canvas.createCanvas(260, 80);
+  const ctx = canvas.getContext('2d');
+  ctx.font = '66px "Brandon"';
+  ctx.fillText(`00000${digits}`.slice(-6), 8, 65);
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'https://www.example.com');
   const tagId = url.pathname.slice(1);
@@ -52,10 +71,19 @@ const server = http.createServer((req, res) => {
   }
   const newTagCount = (tagVal?.count ?? 0) + 1;
 
-  generateNixieDigits(newTagCount);
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // ctx.font = '20px Impact';
-  // ctx.fillText(`${newTagCount} views`, 5, 30);
+  switch (url.searchParams.get('style')) {
+    case 'nixie':
+      generateNixieDigits(newTagCount);
+      break;
+    case 'chessType':
+      generateChessTypeDigits(newTagCount);
+      break;
+    case 'brandon':
+      generateBrandonDigits(newTagCount);
+      break;
+    default:
+      generateChessTypeDigits(newTagCount);
+  }
 
   const bodyBuffer = canvas.toBuffer('image/png');
   res.writeHead(200, {
